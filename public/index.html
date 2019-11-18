@@ -1,10 +1,39 @@
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>Imageboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+
 </head>
 <body>
+    <header>
+        <h1>Imageboard</h1>
+        <div id="input-bar">
+            <p>add an image:</p>
+            <input type="text" name="title" value="" placeholder="Title">
+            <input type="text" name="description" value="" placeholder="Description">
+            <input type="text" name="username" value="" placeholder="Username">
+        </div>
+    </header>
+    <div id="main">
+
+        <div id="image-board">
+            <div v-for="image in images" class="card">
+                <div class="image-container">
+                    <img :src="image.url" :alt="image.title" />
+                </div>
+                <p class="image-title"> {{image.title}} </p>
+            </div>
+        </div>
+
+
+
+    </div>
+
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 </html>
