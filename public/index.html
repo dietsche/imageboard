@@ -8,21 +8,33 @@
 
 </head>
 <body>
-    <header>
-        <h1>Imageboard</h1>
-        <div id="input-bar">
-            <p>add an image:</p>
-            <input type="text" name="title" value="" placeholder="Title">
-            <input type="text" name="description" value="" placeholder="Description">
-            <input type="text" name="username" value="" placeholder="Username">
-        </div>
-    </header>
     <div id="main">
 
+        <header>
+            <h1 @click='handleClick'>Imageboard</h1>
+            <form id="input-bar">
+                <div class="">
+                    <img id="add-image" src="img/add_image.png" alt="">
+                </div>
+                <input v-model="title" type="text" name="title" value="" placeholder="Title">
+                <input v-model="description" type="text" name="description" value="" placeholder="Description">
+                <input v-model="username" type="text" name="username" value="" placeholder="Username">
+
+                <input @change="handleChange" type="file" name="file" id="file" accept="image/*">
+                <label for="file">
+                    <img id="upload-image" src="img/upload.png" alt="">
+                    <img v-if="imageLoaded" id="upload-image" src="img/check.png" alt="">
+                    <span v-if="!imageLoaded"> Choose file... </span>
+                </label>
+
+                <button @click.prevent.default="handleClick">Submit</button>
+            </form>
+        </header>
+
         <div id="image-board">
-            <div v-for="image in images" class="card">
+            <div v-for="image in images" v-bind:key="image.url" class="card">
                 <div class="image-container">
-                    <img :src="image.url" :alt="image.title" />
+                    <img :src="image.url" :alt="image.url" />
                 </div>
                 <p class="image-title"> {{image.title}} </p>
             </div>
