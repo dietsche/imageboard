@@ -2,11 +2,13 @@ new Vue({
     el: "#main",
     data: {
         images: [],
-        imageLoaded: false,
+        id: null, //don't need it here???!
         title: "",
         description: "",
         username: "",
-        file: null
+        file: null,
+        imageLoaded: false,
+        currentImage: null
     },
     mounted: function() {
         console.log("vue component has mounted!");
@@ -31,6 +33,11 @@ new Vue({
                 .post("/upload", fd)
                 .then(function(resp) {
                     me.images.unshift(resp.data.image);
+                    me.title = "";
+                    me.description = "";
+                    me.username = "";
+                    me.imageLoaded = false;
+
                     console.log("me.images: ", me.images);
                     console.log("resp from POST /upload: ", resp.data);
                 })
@@ -43,9 +50,12 @@ new Vue({
             console.log(e.target.files[0]);
             this.file = e.target.files[0];
             this.imageLoaded = true;
-            // if (this.file) {
-            //
-            // }
+        },
+        setCurrentImage: function(image_id) {
+            this.currentImage = image_id;
+        },
+        unsetCurrentImage: function() {
+            this.currentImage = null;
         }
     }
 });

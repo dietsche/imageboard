@@ -27,6 +27,7 @@ const uploader = multer({
 const db = require("./utils/db");
 
 app.use(express.static("./public"));
+app.use(express.json());
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     console.log("this is the upload route");
@@ -52,6 +53,38 @@ app.get("/images", (req, res) => {
         // console.log(result.rows);
         res.json(result.rows);
     });
+});
+
+app.get("/current-image/:id", (req, res) => {
+    console.log("req.params ", req.params.id);
+    db.getCurrentImage(req.params.id).then(result => {
+        console.log("result.rows ", result.rows);
+        res.json(result.rows);
+    });
+});
+
+app.get("/comments/:id", (req, res) => {
+    db.getComments(req.params.id).then(result => {
+        console.log("result comments: ", result.rows);
+        res.json(result.rows);
+    });
+});
+
+app.post("/add-comment", (req, res) => {
+    console.log("post comment req.body: ", req.body.comment);
+    console.log("post comment req.body: ", req.newcomment);
+
+    const { comment, username, image_id } = req.body;
+    db.addComment(comment, username, image_id)
+        //wie gehe ich mit return-werten um, damit aktualisierung sofort erfolgt????
+        .then(({ rows }) =>
+            res.json({
+                comment: rows[0] //({ success: true });
+            })
+        )
+        .catch(err => {
+            console.log("error in post: ", err);
+        });
 });
 
 app.listen(8080, () => {

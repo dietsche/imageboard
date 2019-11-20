@@ -1,6 +1,7 @@
 body {
-    background-color: rgb(30,30,30);
-    color: rgb(220,220,220);
+    background-color: rgb(60,60,60);
+    /* color: rgb(220,220,220); */
+    color: rgb(130,220,220);
     /* font-family: "Roboto", sans-serif; */
     font-family: "Arvo", sans-serif;
     margin: 0;
@@ -8,18 +9,29 @@ body {
 }
 
 header {
-    height: 180px;
+    margin-bottom: 20px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgb(0, 128, 128);
 }
 
+
+
 h1 {
-    font-size: 60px;
-    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 32px;
+    font-weight: 600;
+    font-family: "Maven Pro", sans-serif;
+    font-size: calc(40px + 3vw);
     letter-spacing: 5px;
-    margin-top: 10px;
+}
+
+@media only screen and (max-width: 1000px) {
+    h1 {
+        font-weight: 900;
+    }
 }
 
 
@@ -27,7 +39,14 @@ h1 {
     width: 100%;
     display: flex;
     justify-content: center;
+}
 
+@media only screen and (max-width: 1000px) {
+    #input-bar {
+        /* flex-direction: column;
+        align-items: center; */
+        flex-wrap: wrap;
+    }
 }
 
 #add-image {
@@ -40,11 +59,11 @@ input {
     background-color: rgb(80,80,80);
     width: 30vh;
     height: 30px;
-    min-width: 120px;
+    min-width: 150px;
     /* border: 1px  rgb(70,70,70) solid; */
     border: 3px rgb(0,0,0,0) solid;
     border-radius: 3px;
-    margin: 0 10px;
+    margin: 10px;
     font-family: Roboto;
     font-size: 16px;
     color: white;
@@ -77,7 +96,7 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-width: 150px;
+    min-width: 110px;
     height: 32px;
     border: 3px rgb(0,0,0,0) solid;
     border-radius: 3px;
@@ -86,9 +105,19 @@ label {
     color: rgb(80,80,80);
     font-size: 16px;
     font-weight: bold;
-    margin: 0 10px;
+    margin: 10px;
     padding: 0 15px;
+    cursor: pointer;
 }
+
+@media only screen and (max-width: 1000px) {
+    label {
+        margin: 10px 30vw;
+        max-width: 25px;
+
+    }
+}
+
 
 input[name="file"]:focus + label {
     border: 3px darkred solid;
@@ -101,16 +130,17 @@ input[name="file"]:focus + label {
     margin-right: 3px;
     min-width: 20px;
     max-width: 25px;
-
 }
+
+
 
 button {
     background-color: rgb(220,220,220);
-    width: 100px;
+    width: 110px;
     height: 36.8px;
     border: 3px rgba(0,0,0,0) solid;
     border-radius: 3px;
-    margin: 0 10px;
+    margin: 10px;
     font-family: Roboto;
     color: rgb(80,80,80);
     font-size: 16px;
@@ -118,48 +148,62 @@ button {
     cursor: pointer;
 }
 
+@media only screen and (max-width: 1000px) {
+    button {
+        margin: 10px 30vw;
+    }
+}
+
 button:focus {
     border: 3px darkred solid;
 }
 
 #image-board {
+    position: relative;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .card {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     /* background-color: rgb(70,70,70); */
-    height: 25vw;
+    height: 22vw;
     width: 30vw;
-    min-height: 220px;
+    min-height: 200px;
     min-width: 264px;
-    margin: 10px 15px;
+    margin: 10px 10px;
     /* padding: 5px; */
     cursor: pointer;
-}
-
-
-.card .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 85%;
     overflow: hidden;
     border-radius: 4px;
 }
 
-img {
-    min-height: 100%;
-    min-width: 100%;
-    object-fit: fill;
-    transition: transform .3s;
-
+@media only screen and (max-width: 580px) {
+    .card {
+        height: 58vw;
+        width: 80vw;
+    }
 }
 
-img:hover {
+
+.card:hover > img {
     transform: scale(1.02);
+}
+
+
+
+img {
+    position: relative;
+
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: fill;
+    transition: transform .3s;
+    z-index: 1;
 }
 
 .card:hover > p {
@@ -167,9 +211,204 @@ img:hover {
 }
 
 
-
 .card .image-title {
-    font-size: 15px;
-    margin-top: 12px;
-    margin-left: 5px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    background-color: rgba(20,20,20,.5);
+    top: 85%;
+    color: rgb(220,220,220);
+    font-size: calc(12px + .3vw);
+    z-index: 20;
+    padding-left: 15px;
+}
+
+
+/* MODAL */
+
+.modal-container {
+    /* display: none; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 30;
+}
+
+.modal {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    margin: 2vh;
+    height: 90%;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: rgb(0, 128, 128);
+    overflow: hidden;
+
+}
+
+@media only screen and (max-width: 1000px) {
+    .modal {
+        flex-direction: column;
+    }
+}
+
+
+#modal-image-container {
+    height: 100%;
+    width: 60%;
+}
+
+
+@media only screen and (max-width: 1000px) {
+    #modal-image-container {
+        width: 90%;
+        max-height: 60%;
+    }
+}
+
+
+#modal-image-container img {
+    object-fit: contain;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#modal-image-description-and-comments {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    color: black;
+    width: 37%;
+    height: 85vh;
+    margin-left: 2%;
+    margin-right: -20px;
+    font-size: calc(10px + .8vw);
+}
+
+@media only screen and (max-width: 1000px) {
+    #modal-image-description-and-comments {
+        width: 90%;
+    }
+}
+
+
+#modal-title {
+    font-weight: bold;
+    font-size: calc(13px + 1vw);
+    margin-bottom: 5px;
+}
+
+#modal-username-and-date {
+    font-weight: normal;
+    font-style: italic;
+    font-size: calc(7px + .6vw);
+}
+
+#modal-comments-container {
+    flex-grow: 3;
+    height: 50%;
+    overflow: hidden;
+}
+
+#p-add-comment {
+    font-size: calc(7px + .6vw);
+    margin-bottom: 0;
+}
+
+#add-comment-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+#input-comment {
+    width: 52%;
+    height: 30px;
+}
+
+#input-comment-username {
+    width: 16%;
+    min-width: 80px;
+    height: 30px;
+}
+
+#button-comment {
+    width: 40px;
+    margin: 10px;
+}
+
+#comment-container {
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.comment-box {
+    color: white;
+    font-size: 16px;
+    background-color: grey;
+    margin-bottom: 6px;
+    border-radius: 2px;
+    padding: 1px 8px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .comment-box {
+        font-size: 12px;
+    }
+}
+
+.comment-username,
+.comment-date {
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .comment-username,
+    .comment-date {
+        font-size: 10px;
+    }
+}
+
+
+#exit-modal {
+    align-self: start;
+    color: black;
+    font-family: Tahoma;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 1000px) {
+    #exit-modal {
+        position: absolute;
+        top: 0;
+        margin-right: -10px;
+        align-self: end;
+    }
+}
+
+
+#darkness {
+    position: relative;
+    visibility: hidden;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    /* height: calc(100% + 30px); */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+#darkness.on {
+    visibility: visible;
 }

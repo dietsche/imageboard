@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro&display=swap" rel="stylesheet">
+
 
 </head>
 <body>
@@ -13,38 +15,90 @@
         <header>
             <h1 @click='handleClick'>Imageboard</h1>
             <form id="input-bar">
-                <div class="">
+                <!-- <div class="">
                     <img id="add-image" src="img/add_image.png" alt="">
-                </div>
+                </div> -->
+                <label for="file">
+                    <img id="upload-image" src="img/upload.png" alt="">
+                    <img v-if="imageLoaded" id="upload-image" src="img/check.png" alt="">
+                    <span v-if="!imageLoaded"> Add image</span>
+                </label>
+
                 <input v-model="title" type="text" name="title" value="" placeholder="Title">
                 <input v-model="description" type="text" name="description" value="" placeholder="Description">
                 <input v-model="username" type="text" name="username" value="" placeholder="Username">
 
                 <input @change="handleChange" type="file" name="file" id="file" accept="image/*">
-                <label for="file">
-                    <img id="upload-image" src="img/upload.png" alt="">
-                    <img v-if="imageLoaded" id="upload-image" src="img/check.png" alt="">
-                    <span v-if="!imageLoaded"> Choose file... </span>
-                </label>
-
                 <button @click.prevent.default="handleClick">Submit</button>
             </form>
         </header>
 
         <div id="image-board">
-            <div v-for="image in images" v-bind:key="image.url" class="card">
-                <div class="image-container">
+            <div v-for="image in images" v-bind:key="image.url" @click="setCurrentImage(image.id)" class="card">
                     <img :src="image.url" :alt="image.url" />
-                </div>
-                <p class="image-title"> {{image.title}} </p>
+                    <div class="image-title">
+                        <div class="">
+                            <p> {{image.title}} </p>
+                        </div>
+                    </div>
             </div>
         </div>
 
-
+        <image-modal
+        v-if="currentImage"
+        v-on:closemodal="unsetCurrentImage"
+        v-bind:id="currentImage"
+        > </image-modal>
 
     </div>
+    <script id="modaltemplate" type="text/x-template">
+        <div class="modal-container">
+
+                <div class="modal">
+                    <div id="modal-image-container">
+                        <img :src="url" :alt="title" />
+                    </div>
+                    <div id="modal-image-description-and-comments">
+                        <div id="modal-image-description-container">
+                            <p id="modal-title"> {{title}} </p>
+                            <p id="modal-username-and-date">uploaded by {{username}} on {{date}}</p>
+                            <p>{{description}} </p>
+                        </div>
+
+                        <comments
+                        v-bind:id="id"
+                        > </comment>
+
+                    </div>
+                    <div v-on:click="closemodal" id="exit-modal">
+                        &times;
+                    </div>
+                </div>
+            </div>
+    </script>
+
+    <script id="commenttemplate" type="text/x-template">
+        <div id="modal-comments-container">
+            <p id="p-add-comment">Add a comment:</p>
+            <div id="add-comment-container">
+                <!-- <p>add a comment:</p> -->
+                <input v-model="newcomment" type="text" name="comment" value="" placeholder="Comment"  id="input-comment">
+                <input v-model="newusername" type="text" name="username" value="" placeholder="Username" id="input-comment-username">
+                <button @click.prevent.default="addComment" id="button-comment">></button>
+            </div>
+            <div id="comment-container">
+                <div v-for="comment in comments" class="comment-box">
+                    <p> <span class="comment-username">{{comment.username}}</span> - <span class="comment-date">{{comment.created_at}}</span> </p>
+                    <p>{{comment.comment}}</p>
+                </div>
+            </div>
+        </div>
+
+    </script>
+
 
     <script src="/js/vue.js"></script>
+    <script src="/js/components.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
 </body>
