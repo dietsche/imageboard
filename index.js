@@ -55,12 +55,24 @@ app.get("/images", (req, res) => {
     });
 });
 
+app.get("/more-images/:startid/:offset", (req, res) => {
+    db.getMoreImages(req.params.startid, req.params.offset).then(({ rows }) => {
+        rows;
+        res.json(rows);
+        console.log("new rows: ", rows);
+    });
+});
+
 app.get("/current-image/:id", (req, res) => {
     console.log("req.params ", req.params.id);
-    db.getCurrentImage(req.params.id).then(result => {
-        console.log("result.rows ", result.rows);
-        res.json(result.rows);
-    });
+    db.getCurrentImage(req.params.id)
+        .then(result => {
+            console.log("result.rows ", result.rows);
+            res.json(result.rows);
+        })
+        .catch(err => {
+            console.log("NO IMAGE: ", err);
+        });
 });
 
 app.get("/comments/:id", (req, res) => {

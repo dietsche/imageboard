@@ -12,8 +12,8 @@
 <body>
     <div id="main">
 
-        <header>
-            <h1 @click='handleClick'>Imageboard</h1>
+        <header @click='getMoreImages' >
+            <h1>Imageboard</h1>
             <form id="input-bar">
                 <!-- <div class="">
                     <img id="add-image" src="img/add_image.png" alt="">
@@ -21,7 +21,7 @@
                 <label for="file">
                     <img id="upload-image" src="img/upload.png" alt="">
                     <img v-if="imageLoaded" id="upload-image" src="img/check.png" alt="">
-                    <span v-if="!imageLoaded"> Add image</span>
+                    <span v-if="!imageLoaded">Add image</span>
                 </label>
 
                 <input v-model="title" type="text" name="title" value="" placeholder="Title">
@@ -34,14 +34,16 @@
         </header>
 
         <div id="image-board">
-            <div v-for="image in images" v-bind:key="image.url" @click="setCurrentImage(image.id)" class="card">
+
+                <a :href="'#' + image.id" v-for="image in images" v-bind:key="image.url" class="card">
                     <img :src="image.url" :alt="image.url" />
                     <div class="image-title">
                         <div class="">
                             <p> {{image.title}} </p>
                         </div>
                     </div>
-            </div>
+                </a>
+
         </div>
 
         <image-modal
@@ -53,8 +55,10 @@
     </div>
     <script id="modaltemplate" type="text/x-template">
         <div class="modal-container">
+                <a v-if="nextid" :href="'#' + nextid" class="arrow" id="left"><</a>
 
                 <div class="modal">
+
                     <div id="modal-image-container">
                         <img :src="url" :alt="title" />
                     </div>
@@ -74,6 +78,9 @@
                         &times;
                     </div>
                 </div>
+                <a v-if="previd" :href="'#' + previd" class="arrow" id="right">></a>
+
+
             </div>
     </script>
 

@@ -8,7 +8,7 @@ new Vue({
         username: "",
         file: null,
         imageLoaded: false,
-        currentImage: null
+        currentImage: location.hash.slice(1) //don't need it ???!
     },
     mounted: function() {
         console.log("vue component has mounted!");
@@ -17,6 +17,21 @@ new Vue({
             console.log("response from /images: ", me.images);
             me.images = response.data;
         });
+        window.addEventListener("hashchange", function() {
+            me.currentImage = location.hash.slice(1);
+            console.log("The hash has changed!: ", me.currentImage);
+        });
+        setInterval(function() {
+            var scrollPosition = window.scrollY;
+            var windowsHeight = window.innerHeight;
+            var documentHeight = document.documentElement.scrollHeight;
+            if (windowsHeight + scrollPosition >= documentHeight - 100) {
+                me.getMoreImages();
+            } else {
+                console.log("don't display more!!!!");
+                return;
+            }
+        }, 500);
     },
     methods: {
         handleClick: function(e) {
@@ -51,11 +66,28 @@ new Vue({
             this.file = e.target.files[0];
             this.imageLoaded = true;
         },
+        getMoreImages: function() {
+            console.log("click!");
+            var me = this;
+            var startid = this.images[this.images.length - 1].id;
+            var offset = 9;
+            console.log(startid, offset);
+            axios
+                .get("/more-images/" + startid + "/" + offset)
+                .then(function(response) {
+                    console.log("response from /more-images: ", response.data);
+                    me.images = me.images.concat(response.data);
+                })
+                .catch(function(err) {
+                    console.log("error in GET /more-img: ", err);
+                });
+        },
         setCurrentImage: function(image_id) {
             this.currentImage = image_id;
         },
         unsetCurrentImage: function() {
             this.currentImage = null;
+            location.hash = "";
         }
     }
 });

@@ -5,11 +5,27 @@ var db = spicedPg(
 );
 
 exports.getImages = function() {
-    return db.query("SELECT * FROM images ORDER BY created_at DESC LIMIT 12");
+    return db.query("SELECT * FROM images ORDER BY id DESC LIMIT 9");
+};
+
+exports.getMoreImages = function(startId, offset) {
+    return db.query(
+        `SELECT * FROM images
+            WHERE id < $1
+            ORDER BY id DESC
+            LIMIT 9
+            OFFSET $2`,
+        [startId, offset]
+    );
 };
 
 exports.getCurrentImage = function(id) {
-    return db.query("SELECT * FROM images WHERE id = $1", [id]);
+    return db.query(
+        `SELECT *, (SELECT MIN(id) FROM images
+        WHERE id > $1) AS nextid, (SELECT MAX(id) FROM images
+        WHERE id < $1) AS previd FROM images WHERE id = $1`,
+        [id]
+    );
 };
 
 exports.addImage = function(imageUrl, username, title, description) {
