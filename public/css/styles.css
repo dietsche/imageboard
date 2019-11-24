@@ -1,7 +1,6 @@
 body {
     background-color: rgb(60,60,60);
     /* color: rgb(220,220,220); */
-    color: rgb(130,220,220);
     /* font-family: "Roboto", sans-serif; */
     font-family: "Arvo", sans-serif;
     margin: 0;
@@ -17,20 +16,86 @@ header {
     background-color: rgb(0, 128, 128);
 }
 
+/* wohin? */
+#tag-container {
+    display: flex;
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+}
 
+#header-tag-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    height: calc(20px + .5vw);
+    width: 100%;
+    margin: 15px auto;
+}
+
+.tag-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(20px + .5vw);
+    min-width: calc(30px + 2vw);
+    border-radius: 3px;
+    background-color: rgb(220,220,220);
+    margin: 0 10px;
+    padding: 0 7px;
+    border: 3px rgb(50,50,50) solid;
+    font-size: calc(10px + .5vw);
+    cursor: pointer;
+}
+
+#header-tag-container .tag-box {
+    height: calc(30px + .5vw);
+    min-width: calc(40px + 2vw);
+    justify-content: space-between;
+    padding: 0 6px;
+    border-radius: 5px;
+    font-size: calc(12px + .5vw);
+    color: rgb(50,50,50);
+    background-color: rgb(255, 153, 51);
+    margin-right: 2vw;
+}
+
+#close-tag {
+    font-size: calc(15px + .5vw);
+    color: darkred;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#headline {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+#headline img {
+    /* position: absolute; */
+
+    object-fit: scale-down;
+    height: 13vw;
+    min-height: 50px;
+    max-height: 140px;
+
+}
 
 h1 {
     margin-top: 20px;
     margin-bottom: 32px;
+    color: rgb(40,36,30);
     font-weight: 600;
     font-family: "Maven Pro", sans-serif;
-    font-size: calc(40px + 3vw);
+    font-size: calc(50px + 3vw);
     letter-spacing: 5px;
 }
 
 @media only screen and (max-width: 1000px) {
     h1 {
-        font-weight: 900;
+        font-size: calc(45px + 2vw);
+        letter-spacing: 2px;
     }
 }
 
@@ -102,7 +167,7 @@ label {
     border-radius: 3px;
     background-color: rgb(220,220,220);
     font-family: Roboto;
-    color: rgb(80,80,80);
+    color: rgb(40,36,30);
     font-size: 16px;
     font-weight: bold;
     margin: 10px;
@@ -142,7 +207,7 @@ button {
     border-radius: 3px;
     margin: 10px;
     font-family: Roboto;
-    color: rgb(80,80,80);
+    color: rgb(40,36,30);
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -172,10 +237,10 @@ button:focus {
     position: relative;
     height: 15vw;
     width: 20vw;
-    /* height: 22vw;
-    width: 30vw; */
-    min-height: 200px;
-    min-width: 264px;
+    height: 22vw;
+    width: 30vw;
+    /* min-height: 200px;
+    min-width: 264px; */
     margin: 10px 10px;
     cursor: pointer;
     overflow: hidden;
@@ -196,11 +261,10 @@ button:focus {
 
 
 
-img {
+.card img {
     position: relative;
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: scale-down;
+    min-width: 130%;
+    object-fit: contain;
     transition: transform .3s;
     z-index: 1;
 }
@@ -234,7 +298,6 @@ img {
     position: fixed;
     top: 0;
     width: 100%;
-    /* wie geht das eleganter? */
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 30;
@@ -247,10 +310,9 @@ img {
     height: 90vh;
     width: 86vw;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 10px 30px;
     background-color: rgb(0, 128, 128);
-    overflow: hidden;
-
+    overflow-y: auto;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -279,7 +341,7 @@ img {
 }
 
 .arrow {
-    font-size: 50px;
+    font-size: calc(40px + 1.5vw);
     font-weight: bold;
     color: rgb(0, 128, 128);
     cursor: pointer;
@@ -298,6 +360,7 @@ img {
     object-fit: contain;
     max-height: 100%;
     max-width: 100%;
+
 }
 
 #modal-image-description-and-comments {
@@ -349,10 +412,22 @@ img {
     justify-content: start;
 }
 
+#add-comment-container input {
+    margin: 5px 10px;
+
+}
+
 #input-comment {
     width: 52%;
     height: 30px;
 }
+
+@media only screen and (max-width: 1000px) {
+    #input-comment {
+        width: 80%;
+    }
+}
+
 
 #input-comment-username {
     width: 16%;
@@ -362,10 +437,12 @@ img {
 
 #button-comment {
     width: 40px;
-    margin: 10px;
+    margin: 5px 10px;
+
 }
 
 #comment-container {
+    margin-top: 10px;
     max-height: 40vh;
     overflow-y: auto;
 }
@@ -409,8 +486,10 @@ img {
 @media only screen and (max-width: 1000px) {
     #exit-modal {
         position: absolute;
-        top: 20px;
+        top: 30px;
         margin-right: -10px;
         align-self: end;
+        font-size: 20px;
+
     }
 }

@@ -20,7 +20,7 @@ const diskStorage = multer.diskStorage({
 const uploader = multer({
     storage: diskStorage,
     limits: {
-        fileSize: 2097152 //2 MB limit!
+        fileSize: 5000000 //2 MB limit!
     }
 });
 
@@ -48,6 +48,36 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
+app.post("/addTags", (req, res) => {
+    console.log("das kommt beim Server nach add-Tags-req an: ", req.body);
+    const { tags, image_id } = req.body;
+    for (let i = 0; i < tags.length; i++) {
+        db.addTags(tags[i], image_id)
+            .then(({ rows }) => {
+                console.log("Antwort von addTag-DB rows[0]: ", rows[0]);
+                res.json();
+            })
+            .catch(err => {
+                console.log("error in post: ", err);
+            });
+    }
+});
+
+app.get("/tags/:id", (req, res) => {
+    db.getTags(req.params.id).then(result => {
+        console.log("result TAGS: ", result.rows);
+        res.json(result.rows);
+    });
+});
+
+app.get("/image_ids-with-tag/:tag", (req, res) => {
+    console.log("image_ids-with-tag runs");
+    db.getImageIdsWithTag(req.params.tag).then(result => {
+        console.log("result ImageIdsWithTAGS: ", result.rows);
+        res.json(result.rows);
+    });
+});
+
 app.get("/images", (req, res) => {
     db.getImages().then(result => {
         // console.log(result.rows);
@@ -57,7 +87,6 @@ app.get("/images", (req, res) => {
 
 app.get("/more-images/:startid/:offset", (req, res) => {
     db.getMoreImages(req.params.startid, req.params.offset).then(({ rows }) => {
-        rows;
         res.json(rows);
         console.log("new rows: ", rows);
     });

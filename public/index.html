@@ -12,8 +12,11 @@
 <body>
     <div id="main">
 
-        <header @click='getMoreImages' >
-            <h1>Imageboard</h1>
+        <header>
+            <div id="headline">
+                <img src="img/title.png" alt="">
+                <!-- <h1 >Imageboard</h1> -->
+            </div>
             <form id="input-bar">
                 <!-- <div class="">
                     <img id="add-image" src="img/add_image.png" alt="">
@@ -27,10 +30,22 @@
                 <input v-model="title" type="text" name="title" value="" placeholder="Title">
                 <input v-model="description" type="text" name="description" value="" placeholder="Description">
                 <input v-model="username" type="text" name="username" value="" placeholder="Username">
+                <input v-model="tags" type="text" name="tags" value="" placeholder="Tags">
 
                 <input @change="handleChange" type="file" name="file" id="file" accept="image/*">
                 <button @click.prevent.default="handleClick">Submit</button>
             </form>
+            <div v-if="currentTag" id="header-tag-container">
+                <div class="tag-box">
+                    <div>
+                        {{currentTag}}
+                    </div>
+                    <div v-on:click="showAll" id="close-tag">
+                        &times;
+                    </div>
+                </div>
+
+            </div>
         </header>
 
         <div id="image-board">
@@ -49,6 +64,7 @@
         <image-modal
         v-if="currentImage"
         v-on:closemodal="unsetCurrentImage"
+        v-on:sendtag="getImagesWithTag"
         v-bind:id="currentImage"
         > </image-modal>
 
@@ -67,6 +83,12 @@
                             <p id="modal-title"> {{title}} </p>
                             <p id="modal-username-and-date">uploaded by {{username}} on {{date}}</p>
                             <p>{{description}} </p>
+                        </div>
+
+                        <div v-if="tags" id="tag-container">
+                            <div v-for="item in tags" class="tag-box" v-on:click="sendtag">
+                                <p>{{item.tag}}</p>
+                            </div>
                         </div>
 
                         <comments
@@ -100,8 +122,9 @@
                 </div>
             </div>
         </div>
-
     </script>
+
+
 
 
     <script src="/js/vue.js"></script>

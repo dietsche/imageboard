@@ -13,28 +13,52 @@ Vue.component("image-modal", {
             previd: null
         };
     },
-    props: ["id"],
+    props: ["id", "tags"],
     watch: {
         id: function() {
             console.log("WATCHED SUCCESFUL");
             var me = this;
-            axios.get("/current-image/" + me.id).then(function(response) {
-                console.log("response get image ", response);
-                me.title = response.data[0].title;
-                me.description = response.data[0].description;
-                me.username = response.data[0].username;
-                me.url = response.data[0].url;
-                me.date = response.data[0].created_at;
-                me.file = response.data[0].file;
-                me.nextid = response.data[0].nextid;
-                me.previd = response.data[0].previd;
-            });
+            axios
+                .get("/current-image/" + me.id)
+                .then(function(response) {
+                    console.log("response get image ", response);
+                    me.title = response.data[0].title;
+                    me.description = response.data[0].description;
+                    me.username = response.data[0].username;
+                    me.url = response.data[0].url;
+                    me.date =
+                        response.data[0].created_at.substr(0, 10) +
+                        ", " +
+                        response.data[0].created_at.substr(11, 5);
+                    me.file = response.data[0].file;
+                    me.nextid = response.data[0].nextid;
+                    me.previd = response.data[0].previd;
+                })
+                .then(function() {
+                    axios
+                        .get("/tags/" + me.id)
+                        .then(function(response) {
+                            console.log(
+                                "das sind die tags die nach  axios-req vom server zurückgegeben werden , ",
+                                response.data
+                            );
+                            me.tags = response.data;
+                        })
+                        .catch(function(err) {
+                            console.log("no tags: ", err);
+                        });
+                })
+                .catch(function(err) {
+                    console.log("no image send : ", err);
+                    me.closemodal();
+                });
         }
     },
 
     mounted: function() {
         var me = this;
         console.log("modal-component has mounted!");
+
         console.log("id-value: ", this.id);
         axios
             .get("/current-image/" + me.id)
@@ -44,12 +68,29 @@ Vue.component("image-modal", {
                 me.description = response.data[0].description;
                 me.username = response.data[0].username;
                 me.url = response.data[0].url;
-                me.date = response.data[0].created_at;
+                me.date =
+                    response.data[0].created_at.substr(0, 10) +
+                    ", " +
+                    response.data[0].created_at.substr(11, 5);
                 me.file = response.data[0].file;
                 me.nextid = response.data[0].nextid;
                 me.previd = response.data[0].previd;
                 console.log("me.nextid, me.previd: ", me.nextid, me.previd);
                 //me.this =....
+            })
+            .then(function() {
+                axios
+                    .get("/tags/" + me.id)
+                    .then(function(response) {
+                        console.log(
+                            "das sind die tags die nach  axios-req vom server zurückgegeben werden , ",
+                            response.data
+                        );
+                        me.tags = response.data;
+                    })
+                    .catch(function(err) {
+                        console.log("no tags: ", err);
+                    });
             })
             .catch(function(err) {
                 console.log("no image send : ", err);
@@ -60,41 +101,11 @@ Vue.component("image-modal", {
         closemodal: function() {
             this.$emit("closemodal", {});
         },
-        changeToNextImage: function() {
-            var me = this;
-            me.currentImage = me.nextid;
-            axios
-                .get("/current-image/" + me.currentImage)
-                .then(function(response) {
-                    console.log("response get image ", response);
-                    me.title = response.data[0].title;
-                    me.description = response.data[0].description;
-                    me.username = response.data[0].username;
-                    me.url = response.data[0].url;
-                    me.date = response.data[0].created_at;
-                    me.nextid = response.data[0].nextid;
-                    me.previd = response.data[0].previd;
-                    console.log("me.nextid, me.previd: ", me.nextid, me.previd);
-                    //me.this =....
-                });
-        },
-        changeToNextPrev: function() {
-            var me = this;
-            me.currentImage = me.nextid;
-            axios
-                .get("/current-image/" + me.currentImage)
-                .then(function(response) {
-                    console.log("response get image ", response);
-                    me.title = response.data[0].title;
-                    me.description = response.data[0].description;
-                    me.username = response.data[0].username;
-                    me.url = response.data[0].url;
-                    me.date = response.data[0].created_at;
-                    me.nextid = response.data[0].nextid;
-                    me.previd = response.data[0].previd;
-                    console.log("me.nextid, me.previd: ", me.nextid, me.previd);
-                    //me.this =....
-                });
+        sendtag: function(e) {
+            console.log("currentTag: ", e.target.textContent);
+            var currentTag = e.target.textContent;
+            console.log("EVENT_EMITTER RUNS");
+            this.$emit("sendtag", currentTag);
         }
     }
 });
@@ -107,6 +118,7 @@ Vue.component("comments", {
             comments: [],
             comment: "",
             usernamec: "",
+            timec: "",
             newcomment: "",
             newusername: ""
         };
@@ -149,6 +161,8 @@ Vue.component("comments", {
                 })
                 .then(function(resp) {
                     me.comments.unshift(resp.data.comment);
+                    me.newcomment = "";
+                    me.newusername = "";
                 })
                 .catch(function(err) {
                     console.log("error in send-comment : ", err);
