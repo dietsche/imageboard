@@ -14,4 +14,9 @@ Spiced Academy student project: Vue.js-based single page application, where user
 - AWS
   
 # Preview
+Main Page
 <img src="/public/img/imageboard_overview.jpg" />
+<img src="/public/img/imageboard_mobile.png" />
+<img src="/public/img/imageboard_modal.png" />
+
+
