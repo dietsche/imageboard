@@ -13,5 +13,5 @@ Spiced Academy student project: Vue.js-based single page application, where user
 - PostgresSQL
 - AWS
   
-Preview
-<img src="img/imageboard_overview.jpg" />
+# Preview
+<img src="public/img/imageboard_overview.jpg" />
