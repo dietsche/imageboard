@@ -15,11 +15,15 @@ Spiced Academy student project: Vue.js-based single page application, where user
   
 # Preview
 Main Page with overview on images and possibility to upload new images
-<br><img src="/public/img/imageboard_overview.jpg" />
-<br>Detail View of an Image with comment function and tags 
-<br><img src="/public/img/imageboard_modal.png" />
-<br>Mobile View
 <br><br>
-<br><img src="/public/img/imageboard_mobile.png" width="35%"/>
+<img src="/public/img/imageboard_overview.jpg" />
+<br><br>
+Detail View of an Image with comment function and tags 
+<br><br>
+<img src="/public/img/imageboard_modal.png" />
+<br><br>
+Mobile View
+<br><br>
+<img src="/public/img/imageboard_mobile.png" width="35%"/>
 
 
