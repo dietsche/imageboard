@@ -14,9 +14,12 @@ Spiced Academy student project: Vue.js-based single page application, where user
 - AWS
   
 # Preview
-Main Page
+Main Page with overview on images and possibility to upload new images
 <img src="/public/img/imageboard_overview.jpg" />
-<img src="/public/img/imageboard_mobile.png" />
+Detail View of an Image with comment function and tags 
 <img src="/public/img/imageboard_modal.png" />
+Mobile View
+<br>
+<img src="/public/img/imageboard_mobile.png" width="35%"/>
 
 
