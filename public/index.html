@@ -15,12 +15,8 @@
         <header>
             <div id="headline">
                 <img src="img/title.png" alt="">
-                <!-- <h1 >Imageboard</h1> -->
             </div>
             <form id="input-bar">
-                <!-- <div class="">
-                    <img id="add-image" src="img/add_image.png" alt="">
-                </div> -->
                 <label for="file">
                     <img id="upload-image" src="img/upload.png" alt="">
                     <img v-if="imageLoaded" id="upload-image" src="img/check.png" alt="">
@@ -110,7 +106,6 @@
         <div id="modal-comments-container">
             <p id="p-add-comment">Add a comment:</p>
             <div id="add-comment-container">
-                <!-- <p>add a comment:</p> -->
                 <input v-model="newcomment" type="text" name="comment" value="" placeholder="Comment"  id="input-comment">
                 <input v-model="newusername" type="text" name="username" value="" placeholder="Username" id="input-comment-username">
                 <button @click.prevent.default="addComment" id="button-comment">></button>

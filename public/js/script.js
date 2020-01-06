@@ -2,7 +2,7 @@ new Vue({
     el: "#main",
     data: {
         images: [],
-        id: null, //don't need it here???!
+        id: null,
         title: "",
         description: "",
         username: "",
@@ -10,7 +10,7 @@ new Vue({
         currentTag: null,
         file: null,
         imageLoaded: false,
-        currentImage: location.hash.slice(1) //don't need it ???!
+        currentImage: location.hash.slice(1)
     },
 
     mounted: function() {
@@ -116,7 +116,6 @@ new Vue({
             var me = this;
             me.currentTag = currentTag;
             console.log("WITH CURRENT TAG...", currentTag);
-            // var imagesWithTags = [];
             axios
                 .get("/image_ids-with-tag/" + currentTag)
                 .then(function(response) {

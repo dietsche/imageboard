@@ -76,7 +76,6 @@ Vue.component("image-modal", {
                 me.nextid = response.data[0].nextid;
                 me.previd = response.data[0].previd;
                 console.log("me.nextid, me.previd: ", me.nextid, me.previd);
-                //me.this =....
             })
             .then(function() {
                 axios
@@ -111,9 +110,8 @@ Vue.component("image-modal", {
 });
 
 Vue.component("comments", {
-    template: "#commenttemplate", //+ define a template in html!!!!
+    template: "#commenttemplate",
     data: function() {
-        //not an obj (> like in instance), but a func that returns an obj
         return {
             comments: [],
             comment: "",
@@ -123,16 +121,13 @@ Vue.component("comments", {
             newusername: ""
         };
     },
-    props: ["id"], //bezieht sich auf Elternkomponente! nicht auf main!
+    props: ["id"],
     watch: {
         id: function(currentImage) {
             console.log("Watching currentImage: ", currentImage);
             var me = this;
             axios.get("/comments/" + currentImage).then(function(response) {
                 me.comments = response.data;
-
-                // me.comment = response.data[0].comment;
-                // me.usernamec = response.data[0].usernamec;
             });
         }
     },
@@ -143,8 +138,6 @@ Vue.component("comments", {
         axios.get("/comments/" + this.id).then(function(response) {
             me.comments = response.data;
             console.log("images-array!!???: ", me.comments);
-            // me.comment = response.data[0].comment;
-            // me.usernamec = response.data[0].usernamec;
         });
     },
 
@@ -168,8 +161,5 @@ Vue.component("comments", {
                     console.log("error in send-comment : ", err);
                 });
         }
-
-        // closemodal: function() {
-        //     this.$emit("closemodal", {});
     }
 });
