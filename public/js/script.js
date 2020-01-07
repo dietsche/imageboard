@@ -14,12 +14,10 @@ new Vue({
     },
 
     mounted: function() {
-        console.log("vue component has mounted!");
         var me = this;
         this.getImages();
         window.addEventListener("hashchange", function() {
             me.currentImage = location.hash.slice(1);
-            console.log("The hash has changed!: ", me.currentImage);
         });
     },
 
@@ -27,15 +25,12 @@ new Vue({
         getImages: function() {
             var me = this;
             axios.get("/images").then(function(response) {
-                console.log("response from /images: ", me.images);
                 me.images = response.data;
             });
         },
         handleClick: function(e) {
             var me = this;
             e.preventDefault();
-            console.log("läuft");
-            console.log("this: ", this);
             var fd = new FormData();
             fd.append("file", this.file);
             fd.append("title", this.title);
@@ -49,14 +44,8 @@ new Vue({
                     me.title = "";
                     me.description = "";
                     me.username = "";
-                    // me.tags = "";
                     me.imageLoaded = false;
                     me.tags = me.tags.split(", ");
-                    console.log("me.images: ", me.images);
-                    console.log("resp from POST /upload: ", resp.data);
-                    console.log("WARUM HIER NICHT MEHR?");
-                    console.log("das wird an addTAgs übergeben: ", me.tags);
-
                     axios
                         .post("/addTags", {
                             tags: me.tags,
@@ -68,12 +57,10 @@ new Vue({
                 })
 
                 .catch(function(err) {
-                    console.log("error in POST /upload: ", err);
+                    console.log(err);
                 });
         },
         handleChange: function(e) {
-            console.log("läuft");
-            console.log(e.target.files[0]);
             this.file = e.target.files[0];
             this.imageLoaded = true;
         },
@@ -90,18 +77,16 @@ new Vue({
         },
 
         getMoreImages: function() {
-            console.log("click!");
             var me = this;
             var startid = this.images[this.images.length - 1].id;
             var offset = 9;
             axios
                 .get("/more-images/" + startid + "/" + offset)
                 .then(function(response) {
-                    console.log("response from /more-images: ", response.data);
                     me.images = me.images.concat(response.data);
                 })
                 .catch(function(err) {
-                    console.log("error in GET /more-img: ", err);
+                    console.log(err);
                 });
         },
         setCurrentImage: function(image_id) {
@@ -112,20 +97,17 @@ new Vue({
             location.hash = "";
         },
         getImagesWithTag: function(currentTag) {
-            console.log("TAG FUNCTION RUNS");
             var me = this;
             me.currentTag = currentTag;
-            console.log("WITH CURRENT TAG...", currentTag);
             axios
                 .get("/image_ids-with-tag/" + currentTag)
                 .then(function(response) {
-                    console.log("Setting to null");
                     me.currentImage = null;
                     me.images = response.data;
                     location.hash = "";
                 })
                 .catch(function(err) {
-                    console.log("error in GET /image_ids-with-tag: ", err);
+                    console.log(err);
                 });
         },
         showAll: function() {
